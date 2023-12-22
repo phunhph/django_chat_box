@@ -1,0 +1,104 @@
+{% extends "base.html" %} {% load static %} {% block main %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chatapp Realtime - Vinhweb</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css"
+      integrity="sha512-q3eWabyZPc1XTCmF+8/LuE1ozpg5xxn7iO89yfSOd5/oKvyqLngoNGsx8jq92Y8eXJ/IRxQbEC+FGSYxtk2oiw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="{%static 'css/style.css'%}" />
+  </head>
+  <style>
+    .search_file input {
+      height: 42px;
+      width: calc(100% - 50px);
+      font-size: 16px;
+      padding: 0 13px;
+      border: 1px solid #e6e6e6;
+      outline: none;
+      border-radius: 5px 0 0 5px;
+    }
+    .search_file input.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .search_file button {
+      font-size: 17px;
+      cursor: pointer;
+      border: none;
+      background: #fff;
+      color: #333;
+      outline: none;
+      border-radius: 0 5px 5px 0;
+      margin: 0 auto;
+    }
+  </style>
+  <body>
+    <div class="wrapper">
+      <section class="users">
+        <header>
+          <div class="content">
+            <img src="{% static obj.url_image %}" alt="" />
+            <div class="details">
+              <span>{{ obj.name }}</span>
+              <!-- <p><?php echo $row['status']; ?></p> -->
+            </div>
+          </div>
+          <a href="{% url 'login:logout' %}" class="logout">Đăng xuất</a>
+        </header>
+        <form
+          action="{% url 'login:search_file_all' %}?id={{obj.id}}"
+          class="search_file"
+          style="display: flex"
+          method="post"
+        >
+          {% csrf_token %}
+          <input
+            class=""
+            type="text"
+            name="search"
+            id=""
+            placeholder="Nhập tên để tìm kiếm"
+          />
+          <button><i class="fas fa-search"></i></button>
+        </form>
+        <div
+          style="
+            display: flex;
+            flex-direction: row;
+            gap: 30px;
+            margin-bottom: 20px;
+          "
+        >
+          <a href="{% url 'login:list_users' %}" class="logout">List User</a>
+          <a href="{% url 'login:list_groups' %}" class="logout">List Group</a>
+        </div>
+        <div class="users-list">
+          {% for item in users %}
+          <a href="{% url 'Chat:Chat' %}?id={{item.id}}">
+            <div class="content">
+              <img src="{% static item.url_image %}" alt="loix" width="10%" />
+              <div class="details">
+                <span>{{ item.name }}</span>
+                <div>messenger</div>
+              </div>
+            </div>
+            <div class="status-dot ' . $offline . '">
+              <i class="fas fa-circle"></i>
+            </div>
+          </a>
+          {% endfor %}
+        </div>
+      </section>
+    </div>
+    <!-- <script src="{%static 'js/users-event.js'%}"></script> -->
+  </body>
+</html>
+{%endblock main %}

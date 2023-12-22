@@ -1,0 +1,118 @@
+{% extends "base.html" %} {% load static %} {% block main %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chatapp Realtime - Vinhweb</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css"
+      integrity="sha512-q3eWabyZPc1XTCmF+8/LuE1ozpg5xxn7iO89yfSOd5/oKvyqLngoNGsx8jq92Y8eXJ/IRxQbEC+FGSYxtk2oiw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="{%static 'css/style.css'%}" />
+  </head>
+  <style></style>
+  <body>
+    <div class="wrapper">
+      <section class="users form signup">
+        <header>
+          <div class="content">
+            <img src="{% static obj.url_image %}" alt="" />
+            <div class="details">
+              <span>{{ obj.name }}</span>
+              <!-- <p><?php echo $row['status']; ?></p> -->
+            </div>
+          </div>
+          <a href="{% url 'login:logout' %}" class="logout">Đăng xuất</a>
+        </header>
+        <div class="search">
+          <span class="text">Lựa chọn bạn bè để trò chuyện</span>
+          <input
+            class=""
+            type="text"
+            name="search"
+            id=""
+            placeholder="Nhập tên để tìm kiếm"
+          />
+          <button class=""><i class="fas fa-search"></i></button>
+        </div>
+        <div
+          style="
+            display: flex;
+            flex-direction: row;
+            gap: 30px;
+            margin-bottom: 20px;
+          "
+        >
+          <a href="{% url 'login:list_users' %}" class="logout">List User</a>
+          <a href="{% url 'login:list_groups' %}" class="logout">List Group</a>
+        </div>
+        <form
+          action="{% url 'login:add_group' %}"
+          method="post"
+          enctype="multipart/form-data"
+        >
+          {% csrf_token %}
+          <div class="field input">
+            <label for="">Tên nhóm chat</label>
+            <input
+              type="text"
+              name="name"
+              placeholder="Nhập Tên người dùng"
+              required
+            />
+          </div>
+          <div class="field image">
+            <label for="">Ảnh đại diện</label>
+            <input
+              type="file"
+              name="image"
+              accept="image/x-png,image/jpeg,image/jpg"
+              required
+            />
+          </div>
+          <h2>Thêm thành viên</h2>
+          <div class="users-list" style="min-height: auto">
+            {% for item in users %}
+            <div
+              style="
+                display: flex;
+                flex-direction: row;
+                gap: 10px;
+                margin: 0;
+                align-items: center;
+                width: 100%;
+              "
+            >
+              <input type="checkbox" name="men[]" value="{{item.id}}" id="" />
+              <a>
+                <div class="content" style="min-width: 310px; max-width: 310px">
+                  <img
+                    src="{% static item.url_image %}"
+                    alt="loix"
+                    width="10%"
+                  />
+                  <div class="details">
+                    <span>{{ item.name }}</span>
+                    <div>messenger</div>
+                  </div>
+                </div>
+                <div class="status-dot ' . $offline . '">
+                  <i class="fas fa-circle"></i>
+                </div>
+              </a>
+            </div>
+            {% endfor %}
+          </div>
+          <input type="submit" name="Thêm mới" id="" />
+        </form>
+      </section>
+    </div>
+    <!-- <script src="{%static 'js/users-event.js'%}"></script> -->
+  </body>
+</html>
+{%endblock main %}

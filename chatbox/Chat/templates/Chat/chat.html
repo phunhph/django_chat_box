@@ -1,0 +1,188 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chatapp Realtime - Vinhweb</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css"
+      integrity="sha512-q3eWabyZPc1XTCmF+8/LuE1ozpg5xxn7iO89yfSOd5/oKvyqLngoNGsx8jq92Y8eXJ/IRxQbEC+FGSYxtk2oiw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="{%static 'css/style.css'%}" />
+  </head>
+</html>
+<style>
+    .typing-area {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .input-field {
+        flex: 1;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    #fileInput {
+        display: none;
+    }
+
+    label {
+        cursor: pointer;
+        background-color: #3498db;
+        color: #fff;
+        padding: 8px 12px;
+        border-radius: 4px;
+        margin-left: 8px;
+    }
+
+    button {
+        cursor: pointer;
+        background-color: #2ecc71;
+        color: #fff;
+        padding: 8px 12px;
+        border: none;
+        border-radius: 4px;
+    }
+    .outgoing a{
+    color: #fff;
+}
+.incoming a{
+    color: #000;
+}
+</style>
+<body>
+    <div class="wrapper">
+        <section class="chat-area">
+            <header>
+                <a href="{% url 'login:list_users' %}" class="back-icon">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+                <img src="{% static info.url_image %}" alt="loix" width="10%" />
+              <div class="details">
+                    <span>{{ info.name }}</span>
+              </div>
+            </header>
+            <div class="chat-box">
+                {% for item in obj %}
+                    {% if item.id_in|stringformat:"s" == id_value|stringformat:"s" %}
+                        <div class="chat outgoing">
+                            <div class="details">
+                                {% if item.url_file %}
+                                <p>
+                                    <a href="{% static item.url_file %}" download>
+                                        {{ item.url_file }}
+                                    </a>
+                                </p>
+                                {% else %}
+                                    <p>{{ item.mes }}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="chat incoming">
+                            <div class="details">
+                                {% if item.url_file %}
+                                <p>
+                                    <a href="{% static item.url_file %}" download>
+                                        {{ item.url_file }}
+                                    </a>
+                                </p>
+                                {% else %}
+                                    <p>{{ item.mes }}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endif %}     
+                {% endfor %}
+            </div>
+            
+            
+            
+            <form action="{% url 'Chat:Chat' %}" method="post" class="typing-area" enctype="multipart/form-data">
+                {% csrf_token %}
+                 <!-- File input for uploading files -->
+                 <input type="file" name="file" id="fileInput">
+                 <label for="fileInput">Tải file</label>
+                <input type="text" name="incoming_id" class="incoming_id" value="{{id_value}}" hidden>
+                <input type="text" name="message" class="input-field" placeholder="Nhập nội dung ở đây..." autocomplete="off">
+            
+               
+            
+                <button type="submit">Gửi</button>
+            </form>
+            
+        </section>
+    </div>
+    
+    <!-- <script src="{%static 'js/chat-event.js'%}"></script> -->
+   
+</body>
+<script>
+    // Lựa chọn các phần tử DOM
+const form = document.querySelector(".typing-area");
+const inputField = form.querySelector(".input-field");
+const sendBtn = form.querySelector("button");
+const chatBox = document.querySelector(".chat-box");
+
+// Lấy giá trị incoming_id từ một trường ẩn trong form
+const incoming_id = form.querySelector(".incoming_id").value;
+
+// // Ngăn chặn sự kiện gửi form mặc định
+// form.onsubmit = (e) => {
+//   e.preventDefault();
+// };
+chatBox.scrollTop = chatBox.scrollHeight;
+// Đặt trọng tâm vào trường nhập
+inputField.focus();
+
+// Sự kiện khi người dùng gõ vào trường nhập
+inputField.onkeyup = () => {
+  if (inputField.value != "") {
+    sendBtn.classList.add("active"); // Thêm class "active" vào nút gửi khi trường nhập không trống
+  } else {
+    sendBtn.classList.remove("active"); // Loại bỏ class "active" khỏi nút gửi khi trường nhập trống
+  }
+};
+    function te(){
+        const data = { username: "example" };
+        postJSON(data);
+    }
+    async function postJSON(data) {
+        let url = "{% url 'Chat:Chat' %}"
+    try {
+        const response = await fetch(url, {
+        method: "POST", // or 'PUT'
+        headers: {
+        "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+    });
+
+        const result = await response.json();
+        console.log("Success:", result);
+    } catch (error) {
+        console.error("Error:", error);
+    }
+}
+document.addEventListener("DOMContentLoaded", function () {
+        // Get the file input and form elements
+        var fileInput = document.getElementById("fileInput");
+        var form = document.querySelector(".typing-area");
+
+        // Listen for changes in the file input
+        fileInput.addEventListener("change", function () {
+            // Automatically submit the form when a file is selected
+            form.submit();
+        });
+    });
+
+</script>
+</html>

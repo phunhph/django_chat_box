@@ -1,0 +1,169 @@
+{% extends "base.html" %} {% load static %} {% block main %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chatapp Realtime - Vinhweb</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css"
+      integrity="sha512-q3eWabyZPc1XTCmF+8/LuE1ozpg5xxn7iO89yfSOd5/oKvyqLngoNGsx8jq92Y8eXJ/IRxQbEC+FGSYxtk2oiw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="{%static 'css/style.css'%}" />
+  </head>
+  <style>
+    .search_file input {
+      height: 42px;
+      width: calc(100% - 50px);
+      font-size: 16px;
+      padding: 0 13px;
+      border: 1px solid #e6e6e6;
+      outline: none;
+      border-radius: 5px 0 0 5px;
+    }
+    .search_file input.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .search_file button {
+      font-size: 17px;
+      cursor: pointer;
+      border: none;
+      background: #fff;
+      color: #333;
+      outline: none;
+      border-radius: 0 5px 5px 0;
+      margin: 0 auto;
+    }
+  </style>
+  <body>
+    <div class="wrapper">
+      <section class="users">
+        <header>
+          <div class="content">
+            <a
+              href="{% url 'login:list_users' %}"
+              class="back-icon"
+              style="margin-right: 10px; font-size: larger"
+            >
+              <i class="fas fa-arrow-left"></i>
+            </a>
+            <img src="{% static info.url_image %}" alt="" />
+            <div class="details">
+              <span>{{ info.name }}</span>
+              <!-- <p><?php echo $row['status']; ?></p> -->
+            </div>
+          </div>
+        </header>
+        <div class="chat-box">
+          <h2>Users</h2>
+          <div
+            style="
+              display: flex;
+              flex-direction: row;
+              gap: 30px;
+              margin-bottom: 20px;
+            "
+          ></div>
+          <div class="users-list" style="min-height: auto">
+            {% for item in users %}
+            <a>
+              <div class="content" style="min-width: 310px; max-width: 310px">
+                <img src="{% static item.url_image %}" alt="loix" width="10%" />
+                <div class="details">
+                  <span>{{ item.url_file }}</span>
+                  <div>{{ item.name }}</div>
+                </div>
+              </div>
+              <!-- <div class="status-dot ' . $offline . '">
+                <i class="fas fa-circle"></i>
+              </div> -->
+              <div
+                style="
+                  display: flex;
+                  align-items: center;
+                  justify-content: start;
+                  gap: 100px;
+                "
+              >
+                <!-- Biểu tượng Share -->
+                <a
+                  style="color: black"
+                  href="{% url 'login:share_file_all' %}?id={{info.id}}&file={{item.url_file}}"
+                >
+                  <i class="fas fa-share"></i
+                ></a>
+                <!-- Biểu tượng Download -->
+                <a
+                  style="color: black"
+                  href="{% static item.url_file %}"
+                  download
+                >
+                  <i class="fas fa-download"></i>
+                </a>
+              </div>
+            </a>
+            {% endfor %}
+          </div>
+          <h2>Group</h2>
+          <div
+            style="
+              display: flex;
+              flex-direction: row;
+              gap: 30px;
+              margin-bottom: 20px;
+            "
+          ></div>
+          <div class="users-list" style="min-height: auto">
+            {% for item in group %}
+            <a>
+              <div class="content" style="min-width: 310px; max-width: 310px">
+                <img src="{% static item.url_image %}" alt="loix" width="10%" />
+                <div class="details">
+                  <span>{{ item.url_file }}</span>
+                  <div>
+                    {{ item.name }} <span>( {{item.name_group}} )</span>
+                  </div>
+                </div>
+              </div>
+              <!-- <div class="status-dot ' . $offline . '">
+                <i class="fas fa-circle"></i>
+              </div> -->
+              <div
+                style="
+                  display: flex;
+                  align-items: center;
+                  justify-content: start;
+                  gap: 100px;
+                "
+              >
+                <!-- Biểu tượng Share -->
+                <a
+                  style="color: black"
+                  href="{% url 'login:share_file_all' %}?file={{item.url_file}}"
+                >
+                  <i class="fas fa-share"></i
+                ></a>
+                <!-- Biểu tượng Download -->
+                <a
+                  style="color: black"
+                  href="{% static item.url_file %}"
+                  download
+                >
+                  <i class="fas fa-download"></i>
+                </a>
+              </div>
+            </a>
+            {% endfor %}
+          </div>
+        </div>
+      </section>
+    </div>
+    <!-- <script src="{%static 'js/users-event.js'%}"></script> -->
+  </body>
+</html>
+{%endblock main %}

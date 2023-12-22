@@ -1,0 +1,84 @@
+{% extends "base.html" %} {% load static %} {% block main %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chatapp Realtime - Vinhweb</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css"
+      integrity="sha512-q3eWabyZPc1XTCmF+8/LuE1ozpg5xxn7iO89yfSOd5/oKvyqLngoNGsx8jq92Y8eXJ/IRxQbEC+FGSYxtk2oiw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="{%static 'css/style.css'%}" />
+  </head>
+  <style></style>
+  <body>
+    <div class="wrapper">
+      <section class="users form signup">
+        <header>
+          <div class="content">
+            <a
+              href="{% url 'Chat:Chat_group' %}?id={{info.id}}"
+              class="back-icon"
+              style="margin-right: 10px; font-size: large"
+            >
+              <i class="fas fa-arrow-left"></i>
+            </a>
+            <img src="{% static info.url_image %}" alt="" />
+            <div class="details">
+              <span>{{ info.name_group }}</span>
+              <p style="font-size: small">Thêm thành viên</p>
+            </div>
+          </div>
+        </header>
+        <form
+          action="{% url 'Chat:add_menber' %}?id={{info.id}}"
+          method="post"
+          enctype="multipart/form-data"
+        >
+          {% csrf_token %}
+          <h2>Thêm thành viên</h2>
+          <div class="users-list" style="min-height: auto">
+            {% for item in obj %}
+            <div
+              style="
+                display: flex;
+                flex-direction: row;
+                gap: 10px;
+                margin: 0;
+                align-items: center;
+                width: 100%;
+              "
+            >
+              <input type="checkbox" name="men[]" value="{{item.id}}" id="" />
+              <a>
+                <div class="content">
+                  <img
+                    src="{% static item.url_image %}"
+                    alt="loix"
+                    width="10%"
+                  />
+                  <div class="details">
+                    <span>{{ item.name }}</span>
+                    <div>messenger</div>
+                  </div>
+                </div>
+                <div class="status-dot ' . $offline . '">
+                  <i class="fas fa-circle"></i>
+                </div>
+              </a>
+            </div>
+            {% endfor %}
+          </div>
+          <input type="submit" name="Thêm mới" id="" />
+        </form>
+      </section>
+    </div>
+    <!-- <script src="{%static 'js/users-event.js'%}"></script> -->
+  </body>
+</html>
+{%endblock main %}

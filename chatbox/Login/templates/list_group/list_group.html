@@ -1,0 +1,75 @@
+{% extends "base.html" %} {% load static %} {% block main %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chatapp Realtime - Vinhweb</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css"
+      integrity="sha512-q3eWabyZPc1XTCmF+8/LuE1ozpg5xxn7iO89yfSOd5/oKvyqLngoNGsx8jq92Y8eXJ/IRxQbEC+FGSYxtk2oiw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="{%static 'css/style.css'%}" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <section class="users">
+        <header>
+          <div class="content">
+            <img src="{% static obj.url_image %}" alt="" />
+            <div class="details">
+              <span>{{ obj.name }}</span>
+              <!-- <p><?php echo $row['status']; ?></p> -->
+            </div>
+          </div>
+          <a href="{% url 'login:logout' %}" class="logout">Đăng xuất</a>
+        </header>
+        <div class="search">
+          <span class="text">Lựa chọn nhóm để trò chuyện</span>
+          <input
+            class=""
+            type="text"
+            name="search"
+            id=""
+            placeholder="Nhập tên để tìm kiếm"
+          />
+          <!-- <button class=""><i class="fas fa-search"></i></button> -->
+        </div>
+        <div
+          style="
+            display: flex;
+            flex-direction: row;
+            gap: 30px;
+            margin-bottom: 20px;
+          "
+        >
+          <a href="{% url 'login:list_users' %}" class="logout">List User</a>
+          <a href="{% url 'login:list_groups' %}" class="logout">List Group</a>
+          <a href="{% url 'login:add_group' %}" class="logout">Thêm Mới</a>
+        </div>
+        <div class="users-list">
+          {% for item in group %}
+          <a href="{% url 'Chat:Chat_group' %}?id={{item.id_group}}">
+            <div class="content">
+              <img src="{% static item.url_image %}" alt="loix" width="10%" />
+              <div class="details">
+                <span>{{ item.name_group }}</span>
+                <div>messenger</div>
+              </div>
+            </div>
+            <div class="status-dot ' . $offline . '">
+              <i class="fas fa-circle"></i>
+            </div>
+          </a>
+          {% endfor %}
+        </div>
+      </section>
+    </div>
+    <!-- <script src="{%static 'js/users-event.js'%}"></script> -->
+  </body>
+</html>
+{%endblock main %}
